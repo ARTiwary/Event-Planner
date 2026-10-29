@@ -437,6 +437,8 @@ $$('.chips').forEach(box => box.addEventListener('click', e => { const c = e.tar
 ['style','needs'].forEach(id => $('#'+id).addEventListener('input', e => syncChips(e.target)));
 
 /* ---------- submit ---------- */
+async function readJson(r){ const t = await r.text();
+  try { return JSON.parse(t); } catch { throw new Error(t ? 'Unexpected reply from server (status ' + r.status + ')' : 'The server sent an empty reply (status ' + r.status + '). Open this page at http://localhost:3000 and check the terminal running server.js for the error.'); } }
 let stepTimer;
 function loading(on){
   $('#load').classList.toggle('on', on); const li = $$('#steps li'); clearInterval(stepTimer);
@@ -452,7 +454,7 @@ $('#f').addEventListener('submit', async e => {
   const started = Date.now();
   try {
     const r = await fetch('/api/plan', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(form)});
-    const d = await r.json(); if (!r.ok) throw new Error(d.error || 'The planner could not respond.');
+    const d = await readJson(r); if (!r.ok) throw new Error(d.error || 'The planner could not respond.');
     plan = d.plan; history = []; $('#log').innerHTML = ''; addMsg('a', 'Your plan is ready. Ask me to change a budget line, swap a vendor or draft a message.');
     try { done = JSON.parse(localStorage.getItem('gather:' + plan.title) || '{}'); } catch { done = {}; }
     $('#demo').hidden = !d.demo; if (d.demo) $('#demo').textContent = 'Sample plan. Add GROQ_API_KEY to the .env file to generate plans for your own event.';
@@ -519,7 +521,7 @@ $('#cf').onsubmit = async e => { e.preventDefault(); const t = $('#msg').value.t
   addMsg('u', t); history.push({role:'user', content:t});
   const w = document.createElement('div'); w.className = 'm t'; w.innerHTML = '<i></i><i></i><i></i>'; $('#log').append(w); $('#log').scrollTop = 1e9;
   try { const r = await fetch('/api/chat', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({messages:history, plan, form})});
-    const d = await r.json(); if (!r.ok) throw new Error(d.error); w.remove(); addMsg('a', d.reply); history.push({role:'assistant', content:d.reply});
+    const d = await readJson(r); if (!r.ok) throw new Error(d.error); w.remove(); addMsg('a', d.reply); history.push({role:'assistant', content:d.reply});
   } catch (er) { w.remove(); addMsg('a', 'The planner could not answer: ' + er.message + ' Try sending it again.'); } };
 </script>
 </body>
