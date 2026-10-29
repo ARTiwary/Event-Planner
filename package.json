@@ -1,0 +1,8 @@
+{
+  "name": "ai-event-planner",
+  "version": "1.0.0",
+  "description": "GenAI planning assistant for weddings, birthdays and community events (Groq + OpenAI gpt-oss)",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=18" }
+}
