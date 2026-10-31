@@ -8,7 +8,7 @@ const { HttpError } = require('../src/errors');
 const path = require('path');
 
 test('rate limiter allows up to max, then blocks with a retry time', () => {
-  let t = 1000; const check = createRateLimiter({ windowMs: 60000, max: 3, now: () => t });
+  const t = 1000; const check = createRateLimiter({ windowMs: 60000, max: 3, now: () => t });
   assert.equal(check('a').allowed, true); assert.equal(check('a').allowed, true); assert.equal(check('a').allowed, true);
   const blocked = check('a');
   assert.equal(blocked.allowed, false);

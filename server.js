@@ -18,4 +18,4 @@ server.listen(config.port, () => {
 });
 
 for (const sig of ['SIGINT', 'SIGTERM']) process.on(sig, () => server.close(() => process.exit(0)));
-process.on('unhandledRejection', e => log('unhandledRejection', e && e.message));
+process.on('unhandledRejection', e => log('unhandledRejection', e instanceof Error ? e.message : String(e)));

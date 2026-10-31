@@ -10,7 +10,11 @@ export function moveIndicator() {
   ind.style.width = `${tab.offsetWidth}px`;
 }
 
-/** Select a tab and show its panel. */
+/**
+ * Select a tab and show its panel.
+ * @param {string} name
+ * @param {{focus?: boolean, onShow?: (name: string) => void}} [options]
+ */
 export function showTab(name, { focus = false, onShow } = {}) {
   for (const t of $$('#tabs [role="tab"]')) {
     const on = t.dataset.p === name;
@@ -23,6 +27,7 @@ export function showTab(name, { focus = false, onShow } = {}) {
   onShow?.(name);
 }
 
+/** @param {(name: string) => void} [onShow] called after a tab is shown */
 export function initTabs(onShow) {
   const tabs = () => $$('#tabs [role="tab"]');
   $('#tabs').addEventListener('click', e => {

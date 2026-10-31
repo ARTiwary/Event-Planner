@@ -6,8 +6,10 @@ const ARTICLE = { Wedding: 'a wedding', Birthday: 'a birthday', 'Community event
 const MAX_PRIORITIES = 4;
 const tokens = v => v.split(',').map(s => s.trim()).filter(Boolean);
 
+/** @type {{type: import('../../src/types.js').EventType}} */
 export const state = { type: 'Wedding' };
 
+/** @returns {import('../../src/types.js').PlanInput} the form as the server expects it */
 export function readForm() {
   return {
     eventType: state.type, guests: Number($('#hg').value), budget: Math.round(Number($('#hb').value)), currency: $('#hc').value,
@@ -18,7 +20,7 @@ export function readForm() {
 }
 
 /** Put a saved form back into the controls. */
-export function writeForm(f, setField) {
+export function writeForm(/** @type {any} */ f, /** @type {(n: number) => void} */ setField) {
   setType(f.eventType);
   $('#hg').value = f.guests; $('#hb').value = f.budget; $('#hc').value = f.currency;
   for (const id of ['date', 'location', 'style', 'needs', 'focus', 'notes']) $(`#${id}`).value = f[id] || '';
@@ -47,6 +49,7 @@ function syncChips(input) {
   $$(`.chips[data-for="${input.id}"] .chip`).forEach(c => c.setAttribute('aria-pressed', String(have.includes(c.textContent.toLowerCase()))));
 }
 
+/** @param {{setField: (n: number) => void, onSubmit: (form: import('../../src/types.js').PlanInput) => void}} handlers */
 export function initForm({ setField, onSubmit }) {
   for (const id of ['hg', 'hb', 'hc']) $(`#${id}`).addEventListener('input', () => refresh(setField));
   refresh(setField);

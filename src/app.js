@@ -9,7 +9,7 @@ const { demoPlan } = require('./demo');
 
 /**
  * Build the request handler. Everything it depends on is passed in, so tests can supply fakes.
- * @param {{config: object, groq: {call: Function}|null, publicDir: string, log?: Function, now?: Function}} deps
+ * @param {{config: import('./types').Config, groq: import('./types').GroqClient | null, publicDir?: string, log?: import('./types').Logger, now?: () => Date}} deps
  */
 function createApp({ config, groq, publicDir = path.join(__dirname, '..', 'public'), log = () => {}, now = () => new Date() }) {
   const planLimit = createRateLimiter({ windowMs: config.rateWindowMs, max: config.rateLimitPlan });
@@ -31,7 +31,7 @@ function createApp({ config, groq, publicDir = path.join(__dirname, '..', 'publi
   async function handlePlan(req, res) {
     limit(req, res, planLimit);
     const v = validateInput(await readJsonBody(req, config.maxBodyBytes));
-    if (!v.ok) throw new HttpError(400, v.errors[0]);
+    if (v.ok === false) throw new HttpError(400, v.errors[0]);
     const input = v.value;
     if (demo) return sendJson(res, 200, { demo: true, plan: sanitizePlan(demoPlan(input), input.budget) });
     const reply = await groq.call([{ role: 'system', content: SYSTEM }, { role: 'user', content: buildPlanPrompt(input, now()) }], { json: true });

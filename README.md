@@ -61,12 +61,18 @@ tests/               node:test suites (unit + integration with a fake Groq)
 
 Skip link and landmarks, proper tab pattern with arrow, Home and End keys, labelled form controls, `aria-pressed` toggles, live-region announcements for loading, errors and completion, focus moved to the results heading, a chat dialog that traps nothing but returns focus on close, `prefers-reduced-motion` support, 44 px touch targets, and AA colour contrast. Checked with axe-core (WCAG 2.0 to 2.2 A/AA plus best practices): **0 violations** on the hero, form, every results tab and the open chat.
 
-## Tests
+## Development and quality
 
 ```bash
-npm test
+npm install        # dev tools only: eslint and typescript (the app itself has no dependencies)
+npm run verify     # lint + type-check + tests
+npm run coverage   # tests with a coverage table
 ```
-51 tests with Node's built-in runner: validation, money allocation, model-output sanitising, prompt building, rate limiting, path traversal, CSP, calendar export, and full API flows against a fake Groq (timeouts, 400-retry, 401/429/500 mapping, demo mode, 405s). GitHub Actions runs them on every push.
+- **Tests:** 58 tests with Node's built-in runner: validation, money allocation, model-output sanitising, prompt building, rate limiting, path traversal, CSP, calendar export, HTML escaping in every panel, and full API flows against a fake Groq (timeouts, 400-retry, 401/429/500 mapping, demo mode, 405s). About 98% line coverage.
+- **Lint:** ESLint with `eqeqeq`, `prefer-const`, `no-shadow` and friends. Zero warnings.
+- **Types:** the code is checked with TypeScript (`checkJs`) through JSDoc and `src/types.d.ts`; there is no build step.
+- **CI:** GitHub Actions runs lint, type-check and tests on every push.
+- **Structure:** UI panels are pure functions in `public/js/panes.js` (unit-tested); `view.js` only handles behaviour.
 
 ## Deploy (Render, free)
 

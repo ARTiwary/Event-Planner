@@ -3,7 +3,11 @@ import { reducedMotion } from './util.js';
 
 const NS = 'http://www.w3.org/2000/svg';
 
-/** Build the dots (rings from the centre outward) and return a function that sets the visible guest count. */
+/**
+ * Build the dots (rings from the centre outward) and return a function that sets the visible guest count.
+ * @param {SVGSVGElement} svg
+ * @returns {(count: number) => void}
+ */
 export function createField(svg) {
   const dots = [];
   let r = 20, ring = 0;

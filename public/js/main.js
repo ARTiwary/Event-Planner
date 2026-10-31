@@ -2,7 +2,7 @@
 import { $, $$, announce, reducedMotion, store } from './util.js';
 import { postJson } from './api.js';
 import { createField } from './field.js';
-import { initForm, readForm, writeForm } from './form.js';
+import { initForm, writeForm } from './form.js';
 import { initTabs, moveIndicator } from './tabs.js';
 import { initView, showPlan, current, animateSegments } from './view.js';
 import { initChat } from './chat.js';

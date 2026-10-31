@@ -5,7 +5,7 @@ class HttpError extends Error {
   /**
    * @param {number} status HTTP status code
    * @param {string} message Message that is safe to return to the browser
-   * @param {object} [extra] Extra headers or fields (e.g. { retryAfter })
+   * @param {{retryAfter?: number, allow?: string}} [extra] Extra headers (e.g. Retry-After, Allow)
    */
   constructor(status, message, extra = {}) {
     super(message);

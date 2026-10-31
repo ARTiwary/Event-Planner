@@ -6,9 +6,17 @@ const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
 /**
  * Create a small client for Groq's OpenAI-compatible chat API.
  * `fetchImpl` is injectable so tests never touch the network.
+ * @param {{apiKey: string, model: string, timeoutMs?: number, fetchImpl?: typeof fetch, log?: import('./types').Logger}} options
+ * @returns {import('./types').GroqClient}
  */
 function createGroqClient({ apiKey, model, timeoutMs = 60000, fetchImpl = globalThis.fetch, log = () => {} }) {
+  /**
+   * @param {import('./types').ModelMessage[]} messages
+   * @param {{json?: boolean, lean?: boolean}} [options]
+   * @returns {Promise<string>}
+   */
   async function call(messages, { json = false, lean = false } = {}) {
+    /** @type {Record<string, any>} */
     const body = { model, messages, temperature: 0.7, max_tokens: 6000 };
     if (!lean) {
       body.reasoning_effort = 'low';

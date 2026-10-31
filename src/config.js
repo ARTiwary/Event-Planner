@@ -2,7 +2,10 @@
 const fs = require('fs');
 const path = require('path');
 
-/** Load KEY=value pairs from a .env file without overriding real environment variables. */
+/**
+ * Load KEY=value pairs from a .env file without overriding real environment variables.
+ * @param {string} [file]
+ */
 function loadEnv(file = path.join(__dirname, '..', '.env')) {
   let text;
   try { text = fs.readFileSync(file, 'utf8'); } catch { return; }
@@ -12,8 +15,13 @@ function loadEnv(file = path.join(__dirname, '..', '.env')) {
   }
 }
 
-/** Build the runtime configuration from process.env. */
+/**
+ * Build the runtime configuration from process.env.
+ * @param {Record<string, string | undefined>} [env]
+ * @returns {import('./types').Config}
+ */
 function getConfig(env = process.env) {
+  /** @type {(v: string | undefined, d: number) => number} */
   const int = (v, d) => (Number.isFinite(parseInt(v, 10)) ? parseInt(v, 10) : d);
   return {
     apiKey: env.GROQ_API_KEY || '',

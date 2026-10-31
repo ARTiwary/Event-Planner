@@ -15,7 +15,7 @@ export function parseWhen(text) {
 
 const pad = n => String(n).padStart(2, '0');
 const ymd = d => `${d.getUTCFullYear()}${pad(d.getUTCMonth() + 1)}${pad(d.getUTCDate())}`;
-const escapeText = s => String(s).replace(/\\/g, '\\\\').replace(/;/g, '\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
+const escapeText = s => String(s).replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n');
 
 /** Fold long lines to 75 characters as the iCalendar format requires. */
 function fold(line) {

@@ -30,7 +30,7 @@ test('buildIcs makes one all-day event per stage on the right dates', async () =
   assert.match(ics, /DTSTART;VALUE=DATE:20261220/);
   assert.match(ics, /DTEND;VALUE=DATE:20261221/);
   assert.match(ics, /My\\, "party"/, 'commas are escaped');
-  assert.match(ics, /Book\; venue/, 'semicolons are escaped');
+  assert.match(ics, /Book\\; venue/, 'semicolons are escaped');
 });
 
 test('buildIcs folds long lines and returns null without a valid date', async () => {

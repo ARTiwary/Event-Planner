@@ -2,6 +2,10 @@
 import { $, announce } from './util.js';
 import { postJson } from './api.js';
 
+/**
+ * @param {() => {form: any, plan: any}} getContext supplies the current plan for each question
+ * @returns {{reset: () => void}}
+ */
 export function initChat(getContext) {
   const chat = $('#chat'), fab = $('#fab'), log = $('#log'), msg = $('#msg');
   const history = [];

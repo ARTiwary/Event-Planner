@@ -24,7 +24,7 @@ test('validateInput rejects non-object bodies', () => {
 test('validateInput strips control characters and caps length', () => {
   const r = validateInput({ ...GOOD_INPUT, notes: 'a\u0000b\nc' + 'x'.repeat(2000) });
   assert.equal(r.ok, true);
-  assert.ok(!/[\u0000-\u001f]/.test(r.value.notes));
+  assert.ok(!/[\u0000-\u001f]/.test(r.value.notes)); // eslint-disable-line no-control-regex
   assert.ok(r.value.notes.length <= 800);
 });
 
